@@ -12,7 +12,7 @@ html{touch-action:manipulation;}
 
 body{
     font-family:Arial,sans-serif;
-    background:linear-gradient(135deg,#8e44ff,#b56cff)
+    background:linear-gradient(135deg,#050505,#151515,#1b0828);
     color:white;
     margin:0;
     padding:18px;
@@ -60,13 +60,15 @@ input{
 }
 
 button{
-    background:linear-gradient(135deg,#8e44ff,#b56cff)
-    color:#111;
+    background:linear-gradient(135deg,#8e44ff,#b56cff);
+    color:white;
     font-weight:bold;
     cursor:pointer;
 }
 
-#app{display:none;}
+#app{
+    display:none;
+}
 
 #loginBox{
     max-width:430px;
@@ -125,9 +127,12 @@ button{
     text-align:center;
 }
 
+.menu a:hover{
+    background:#303030;
+}
+
 .menu a:active{
     transform:scale(0.98);
-    background:#333;
 }
 
 .menu span{
@@ -161,7 +166,7 @@ button{
 
 .loaderBox{
     background:#1b1b1b;
-    border:1px solid rgba(212,175,55,0.35);
+    border:1px solid rgba(142,68,255,0.35);
     padding:28px;
     border-radius:20px;
     text-align:center;
