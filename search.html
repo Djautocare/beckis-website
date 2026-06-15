@@ -7,13 +7,33 @@
 <title>Search Stock</title>
 
 <style>
+:root{
+    --primary:#8e44ff;
+    --primary-light:#b56cff;
+    --primary-border:rgba(142,68,255,0.25);
+    --primary-border-strong:rgba(142,68,255,0.35);
+
+    --bg1:#050505;
+    --bg2:#151515;
+    --bg3:#1b0828;
+
+    --panel:#1b1b1b;
+    --card:#242424;
+    --input:#2a2a2a;
+    --dark:#333;
+
+    --text:white;
+    --muted:#bbb;
+    --muted2:#aaa;
+}
+
 html{touch-action:manipulation;}
 *{box-sizing:border-box;}
 
 body{
     font-family:Arial,sans-serif;
-    background:linear-gradient(135deg,#050505,#151515,#1f1a08);
-    color:white;
+    background:linear-gradient(135deg,var(--bg1),var(--bg2),var(--bg3));
+    color:var(--text);
     padding:18px;
     margin:0;
 }
@@ -24,8 +44,8 @@ body{
 }
 
 .panel{
-    background:#1b1b1b;
-    border:1px solid rgba(212,175,55,0.25);
+    background:var(--panel);
+    border:1px solid var(--primary-border);
     padding:22px;
     border-radius:22px;
     box-shadow:0 10px 30px rgba(0,0,0,0.45);
@@ -34,13 +54,13 @@ body{
 h1{
     text-align:center;
     margin:8px 0 6px;
-    color:#f4d46b;
+    color:var(--primary-light);
     font-size:32px;
 }
 
 .subtitle{
     text-align:center;
-    color:#bbb;
+    color:var(--muted);
     margin-bottom:22px;
 }
 
@@ -51,13 +71,13 @@ input{
     border:none;
     border-radius:14px;
     font-size:17px;
-    background:#2a2a2a;
-    color:white;
+    background:var(--input);
+    color:var(--text);
     border:1px solid rgba(255,255,255,0.08);
 }
 
 .result-card{
-    background:#242424;
+    background:var(--card);
     border:1px solid rgba(255,255,255,0.08);
     padding:16px;
     border-radius:16px;
@@ -68,18 +88,18 @@ input{
     font-size:18px;
     font-weight:bold;
     margin-bottom:5px;
-    color:white;
+    color:var(--text);
 }
 
 .item-id{
-    color:#aaa;
+    color:var(--muted2);
     font-size:13px;
     margin-bottom:8px;
 }
 
 .qty{
     font-weight:bold;
-    color:#f4d46b;
+    color:var(--primary-light);
     margin-bottom:8px;
 }
 
@@ -93,8 +113,8 @@ input{
 
 .empty{
     text-align:center;
-    color:#aaa;
-    background:#242424;
+    color:var(--muted2);
+    background:var(--card);
     padding:18px;
     border-radius:16px;
 }
@@ -102,8 +122,8 @@ input{
 .back{
     display:block;
     text-align:center;
-    color:white;
-    background:#333;
+    color:var(--text);
+    background:var(--dark);
     text-decoration:none;
     padding:15px;
     border-radius:14px;
@@ -122,8 +142,8 @@ input{
 }
 
 .loaderBox{
-    background:#1b1b1b;
-    border:1px solid rgba(212,175,55,0.35);
+    background:var(--panel);
+    border:1px solid var(--primary-border-strong);
     padding:28px;
     border-radius:20px;
     text-align:center;
@@ -134,7 +154,7 @@ input{
     width:48px;
     height:48px;
     border:5px solid #333;
-    border-top:5px solid #d4af37;
+    border-top:5px solid var(--primary);
     border-radius:50%;
     animation:spin 0.8s linear infinite;
     margin:0 auto 14px;
