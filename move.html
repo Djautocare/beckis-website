@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"> 
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <title>Move Stock</title>
 
 <style>
@@ -83,11 +83,6 @@ button{
     color:var(--text);
     font-weight:bold;
     cursor:pointer;
-}
-
-button.secondary{
-    background:var(--dark);
-    color:var(--text);
 }
 
 button.danger{
@@ -285,6 +280,42 @@ let searchTimer = null;
 let boxContentsCache = {};
 let selectedItems = {};
 
+function boxOrderValue(boxName){
+    const words = {
+        ONE:1,TWO:2,THREE:3,FOUR:4,FIVE:5,
+        SIX:6,SEVEN:7,EIGHT:8,NINE:9,TEN:10,
+        ELEVEN:11,TWELVE:12,THIRTEEN:13,FOURTEEN:14,FIFTEEN:15,
+        SIXTEEN:16,SEVENTEEN:17,EIGHTEEN:18,NINETEEN:19,TWENTY:20,
+        TWENTYONE:21,TWENTYTWO:22,TWENTYTHREE:23,TWENTYFOUR:24,TWENTYFIVE:25,
+        TWENTYSIX:26,TWENTYSEVEN:27,TWENTYEIGHT:28,TWENTYNINE:29,THIRTY:30
+    };
+
+    const text = String(boxName || "").toUpperCase().replace(/[\s-]/g,"");
+
+    for(const word in words){
+        if(text.includes(word)) return words[word];
+    }
+
+    const num = text.match(/\d+/);
+    if(num) return Number(num[0]);
+
+    return 9999;
+}
+
+function sortBoxes(boxes){
+    return [...boxes].sort((a,b)=>{
+        const orderA = boxOrderValue(a.box);
+        const orderB = boxOrderValue(b.box);
+
+        if(orderA !== orderB) return orderA - orderB;
+
+        return String(a.box).localeCompare(String(b.box), undefined, {
+            numeric:true,
+            sensitivity:"base"
+        });
+    });
+}
+
 function showLoading(text){
     document.getElementById("loadingText").innerText = text || "Working...";
     document.getElementById("loadingOverlay").style.display = "flex";
@@ -337,7 +368,7 @@ async function loadBoxes(){
         return;
     }
 
-    allBoxes = data.boxes || [];
+    allBoxes = sortBoxes(data.boxes || []);
 
     fillBoxDropdowns();
     renderBoxList();
@@ -348,7 +379,7 @@ function fillBoxDropdowns(){
     const target = document.getElementById("newBox");
     target.innerHTML = '<option value="">Move To Box</option>';
 
-    allBoxes.forEach(box=>{
+    sortBoxes(allBoxes).forEach(box=>{
         target.innerHTML += `<option value="${esc(box.box)}">${esc(box.box)}</option>`;
     });
 }
@@ -362,7 +393,7 @@ function renderBoxList(){
         return;
     }
 
-    allBoxes.forEach(box=>{
+    sortBoxes(allBoxes).forEach(box=>{
         const boxName = box.box;
 
         list.innerHTML += `
@@ -424,9 +455,7 @@ function renderBoxContents(boxName){
         return;
     }
 
-    let html = `
-        <p><b>${items.length}</b> different items in this box.</p>
-    `;
+    let html = `<p><b>${items.length}</b> different items in this box.</p>`;
 
     items.forEach(item=>{
         const selected = (selectedItems[boxName] || []).some(x => x.itemId === item.itemId);
@@ -465,7 +494,7 @@ function renderBoxContents(boxName){
 }
 
 function boxOptions(excludeBox){
-    return allBoxes
+    return sortBoxes(allBoxes)
         .filter(box => box.box !== excludeBox)
         .map(box => `<option value="${esc(box.box)}">${esc(box.box)}</option>`)
         .join("");
@@ -671,7 +700,7 @@ async function loadSuggestions(){
 
     let summaries = [];
 
-    for(const box of allBoxes){
+    for(const box of sortBoxes(allBoxes)){
         const data = await jsonp({
             action:"BOX_CONTENTS",
             box:box.box
@@ -687,7 +716,7 @@ async function loadSuggestions(){
 
     const lowBoxes = summaries
         .filter(x => x.totalQty > 0 && x.totalQty < 30)
-        .sort((a,b)=>a.totalQty - b.totalQty);
+        .sort((a,b)=>boxOrderValue(a.box) - boxOrderValue(b.box));
 
     if(lowBoxes.length < 2){
         div.innerHTML = "<p>No box combine suggestions right now.</p>";
